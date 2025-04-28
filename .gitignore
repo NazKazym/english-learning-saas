@@ -1,0 +1,17 @@
+# Frontend
+ai-english-frontend/node_modules/
+ai-english-frontend/build/
+
+# Backend
+ai-english-backend/build/
+ai-english-backend/.gradle/
+ai-english-backend/out/
+
+# Common
+*.log
+*.env
+.dockerignore
+.idea/
+.vscode/
+.DS_Store
+docker-compose.override.yml
