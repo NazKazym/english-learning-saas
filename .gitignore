@@ -1,11 +1,21 @@
 # Frontend
 ai-english-frontend/node_modules/
+ai-english-frontend/.idea/
 ai-english-frontend/build/
+ai-english-frontend/.env
+ai-english-frontend/.env.*
 
 # Backend
 ai-english-backend/build/
 ai-english-backend/.gradle/
 ai-english-backend/out/
+ai-english-backend/.env
+ai-english-backend/.env.*
+ai-english-backend/src/main/resources/application-*.properties
+ai-english-backend/src/main/resources/application-*.yml
+ai-english-backend/src/main/resources/application-*.yaml
+ai-english-backend/secrets/
+ai-english-backend/config/
 
 # Common
 *.log
