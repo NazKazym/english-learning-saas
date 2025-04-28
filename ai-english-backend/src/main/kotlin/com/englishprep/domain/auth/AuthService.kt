@@ -2,7 +2,6 @@ package com.englishlearning.domain.auth
 
 import com.englishlearning.domain.user.User
 import com.englishlearning.domain.user.UserService
-import com.englishlearning.infrastructure.external.EmailService
 import io.jsonwebtoken.Claims
 import io.jsonwebtoken.Jws
 import io.jsonwebtoken.JwtException
