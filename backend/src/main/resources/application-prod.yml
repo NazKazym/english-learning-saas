@@ -1,0 +1,30 @@
+# Production environment specific configuration
+spring:
+  datasource:
+    url: ${JDBC_DATABASE_URL:jdbc:postgresql://localhost:5432/english_learning}
+    username: ${JDBC_DATABASE_USERNAME:postgres}
+    password: ${JDBC_DATABASE_PASSWORD:postgres}
+  jpa:
+    show-sql: false
+  redis:
+    url: ${REDIS_URL:redis://localhost:6379}
+
+# SSL configuration handled by Heroku/AWS
+server:
+  forward-headers-strategy: FRAMEWORK
+
+app:
+  cors:
+    allowed-origins: ${ALLOWED_ORIGINS:https://app.englishlearningsaas.com}
+  security:
+    jwt:
+      secret: ${JWT_SECRET}
+      secure-cookie: true
+  email:
+    simulation: false
+    api-key: ${EMAIL_API_KEY}
+
+logging:
+  # Let Heroku/AWS handle log collection
+  level:
+    com.englishlearning: INFO

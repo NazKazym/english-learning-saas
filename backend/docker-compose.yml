@@ -1,0 +1,50 @@
+version: '3.8'
+
+services:
+  app:
+    build: ..
+    restart: unless-stopped
+    ports:
+      - "${PORT:-8080}:${PORT:-8080}"
+    depends_on:
+      - postgres
+      - redis
+    environment:
+      - SPRING_PROFILES_ACTIVE=prod
+      - PORT=${PORT:-8080}
+      - JDBC_DATABASE_URL=jdbc:postgresql://postgres:5432/english_learning
+      - JDBC_DATABASE_USERNAME=postgres
+      - JDBC_DATABASE_PASSWORD=postgres
+      - REDIS_URL=redis://redis:6379
+      - JWT_SECRET=${JWT_SECRET:-your_secret_key_here_change_in_production}
+      - GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID:-}
+      - GOOGLE_CLIENT_SECRET=${GOOGLE_CLIENT_SECRET:-}
+      - AI_API_KEY=${AI_API_KEY:-}
+      - AI_API_ENDPOINT=${AI_API_ENDPOINT:-https://api.ai-provider.com/v1}
+      - EMAIL_API_KEY=${EMAIL_API_KEY:-}
+      - ALLOWED_ORIGINS=${ALLOWED_ORIGINS:-https://app.englishlearningsaas.com}
+
+  postgres:
+    image: postgres:14-alpine
+    restart: unless-stopped
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_DB=english_learning
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+
+  redis:
+    image: redis:7-alpine
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+    command: ["redis-server", "--appendonly", "yes"]
+
+volumes:
+  postgres-data:
+  redis-data:

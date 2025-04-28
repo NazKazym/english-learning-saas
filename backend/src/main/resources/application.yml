@@ -1,0 +1,51 @@
+# Common configuration for all environments
+spring:
+  profiles:
+    active: dev
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+  datasource:
+    hikari:
+      maximum-pool-size: 10
+      minimum-idle: 5
+      idle-timeout: 300000
+      connection-timeout: 20000
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: ${GOOGLE_CLIENT_ID:}
+            client-secret: ${GOOGLE_CLIENT_SECRET:}
+            scope: email,profile
+
+server:
+  port: ${PORT:8080}
+  compression:
+    enabled: true
+    mime-types: application/json,application/xml,text/html,text/plain
+    min-response-size: 2048
+
+app:
+  security:
+    jwt:
+      issuer: english-learning-saas
+      audience: english-learning-users
+      expiration: 3600000  # 1 hour in milliseconds
+  ai:
+    api-key: ${AI_API_KEY:}
+    endpoint: ${AI_API_ENDPOINT:}
+  email:
+    from: noreply@englishlearningsaas.com
+    magic-link-expiration: 900  # 15 minutes in seconds
+
+logging:
+  level:
+    com.englishlearning: INFO
+    org.springframework: WARN
