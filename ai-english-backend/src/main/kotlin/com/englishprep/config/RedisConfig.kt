@@ -1,4 +1,4 @@
-package com.englishlearning.config
+package com.englishprep.config
 
 class RedisConfig {
 }

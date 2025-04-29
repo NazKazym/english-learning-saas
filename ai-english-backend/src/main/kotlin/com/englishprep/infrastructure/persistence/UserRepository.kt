@@ -1,12 +1,12 @@
-package com.englishlearning.infrastructure.persistence
+package com.englishprep.infrastructure.persistence
 
-import com.englishlearning.domain.user.User
+import com.englishprep.domain.user.User
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.stereotype.Repository
-import java.util.*
+import java.util.UUID
 
 @Repository
-interface UserRepository: JpaRepository<User, UUID> {
+interface UserRepository : JpaRepository<User, UUID> {
     fun findByEmail(email: String): User?
     fun existsByEmail(email: String): Boolean
 }

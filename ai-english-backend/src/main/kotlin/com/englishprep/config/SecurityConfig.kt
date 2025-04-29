@@ -1,5 +1,7 @@
-package com.englishlearning.config
+package com.englishprep.config
 
+import com.englishprep.auth.security.JwtRequestFilter
+import com.englishprep.auth.service.AuthService
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.core.env.Environment
@@ -25,26 +27,26 @@ class SecurityConfig(
         http
             .cors { it.configurationSource(corsConfigurationSource()) }
             .csrf { it.disable() }
-            .sessionManagement {
-                it.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-            }
+            .sessionManagement { it.sessionCreationPolicy(SessionCreationPolicy.STATELESS) }
             .authorizeHttpRequests { auth ->
                 auth
-                    .requestMatchers(HttpMethod.POST, "/api/auth/magic-link").permitAll()
-                    .requestMatchers(HttpMethod.GET, "/api/oauth2/**").permitAll()
-                    .requestMatchers("/api/public/**").permitAll()
+                    .requestMatchers(HttpMethod.POST, "/auth/magic-link").permitAll()
+                    .requestMatchers(HttpMethod.POST, "/auth/verify-magic").permitAll()
+                    .requestMatchers(HttpMethod.GET, "/oauth2/**").permitAll()
                     .requestMatchers("/error").permitAll()
                     .anyRequest().authenticated()
             }
-            .oauth2Login { oauth2 ->
-                oauth2
-                    .defaultSuccessUrl("/api/auth/oauth2/success", true)
-                    .failureUrl("/api/auth/oauth2/failure")
-            }
-            .addFilterBefore(
-                JwtRequestFilter(authService),
-                UsernamePasswordAuthenticationFilter::class.java
-            )
+        if (!env.activeProfiles.contains("test")) {
+//            http.oauth2Login { oauth2 ->
+//                oauth2
+//                    .defaultSuccessUrl("http://localhost:3000/dashboard", true)
+//                    .failureUrl("/auth/oauth2/failure")
+//            }
+        }
+        http.addFilterBefore(
+            JwtRequestFilter(authService),
+            UsernamePasswordAuthenticationFilter::class.java
+        )
 
         return http.build()
     }
@@ -52,7 +54,10 @@ class SecurityConfig(
     @Bean
     fun corsConfigurationSource(): CorsConfigurationSource {
         val configuration = CorsConfiguration()
-        configuration.allowedOrigins = listOf("*")
+        configuration.allowedOrigins = listOf(
+            "http://localhost:3000",
+            "https://your-frontend-domain.com"
+        )
         configuration.allowedMethods = listOf("GET", "POST", "PUT", "DELETE", "OPTIONS")
         configuration.allowedHeaders = listOf("*")
         configuration.allowCredentials = true

@@ -1,7 +1,9 @@
-package com.englishlearning.domain.user
+package com.englishprep.domain.user
 
-import com.englishlearning.domain.auth.AuthProvider
-import com.englishlearning.infrastructure.persistence.UserRepository
+import com.englishprep.auth.model.UpdateUserRequest
+import com.englishprep.domain.auth.AuthProvider
+import com.englishprep.infrastructure.persistence.UserRepository
+import jakarta.persistence.EntityNotFoundException
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.util.*
@@ -12,8 +14,11 @@ class UserService(
 ) {
 
     @Transactional(readOnly = true)
-    fun findById(userId: UUID): User? =
-        userRepository.findById(userId).orElse(null)
+    fun getById(id: UUID): User =
+        userRepository.findById(id).orElseThrow {
+            EntityNotFoundException("User with ID $id not found")
+        }
+
 
     @Transactional(readOnly = true)
     fun findByEmail(email: String): User? =
@@ -29,8 +34,7 @@ class UserService(
         name: String? = null,
         pictureUrl: String? = null,
         provider: AuthProvider = AuthProvider.MAGIC_LINK,
-        proficiencyLevel: ProficiencyLevel,
-        testGoal: String
+        proficiencyLevel: ProficiencyLevel
     ): User {
         val normalizedEmail = email.lowercase()
         val existingUser = userRepository.findByEmail(normalizedEmail)
@@ -42,24 +46,20 @@ class UserService(
                 pictureUrl = pictureUrl,
                 authProvider = provider,
                 isVerified = true, // assuming verified by email or OAuth
-                proficiencyLevel = proficiencyLevel,
-                testGoal = testGoal
+                proficiencyLevel = proficiencyLevel
             )
         )
     }
 
     @Transactional
-    fun updateUserProfile(
-        userId: UUID,
-        proficiencyLevel: ProficiencyLevel?,
-        testGoal: String?
-    ): User {
+    fun update(userId: UUID, request: UpdateUserRequest): User {
         val user = userRepository.findById(userId)
-            .orElseThrow { UserNotFoundException("User not found with ID: $userId") }
+            .orElseThrow { NoSuchElementException("User not found") }
 
         val updatedUser = user.copy(
-            proficiencyLevel = proficiencyLevel ?: user.proficiencyLevel,
-            testGoal = testGoal ?: user.testGoal
+            name = request.name ?: user.name,
+            pictureUrl = request.pictureUrl ?: user.pictureUrl,
+            proficiencyLevel = request.proficiencyLevel ?: user.proficiencyLevel
         )
 
         return userRepository.save(updatedUser)

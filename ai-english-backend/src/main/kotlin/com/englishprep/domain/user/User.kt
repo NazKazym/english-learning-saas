@@ -1,13 +1,17 @@
-package com.englishlearning.domain.user
+package com.englishprep.domain.user
 
-import com.englishlearning.domain.auth.AuthProvider
+import com.englishprep.domain.auth.AuthProvider
 import jakarta.persistence.Column
+import jakarta.persistence.Entity
 import jakarta.persistence.EnumType
 import jakarta.persistence.Enumerated
 import jakarta.persistence.Id
+import jakarta.persistence.Table
 import java.time.LocalDateTime
 import java.util.*
 
+@Entity
+@Table(name = "users")
 data class User(
     @Id
     val id: UUID = UUID.randomUUID(),
@@ -24,6 +28,10 @@ data class User(
     val pictureUrl: String? = null,
 
     var lastLoginAt: LocalDateTime? = null,
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    val proficiencyLevel: ProficiencyLevel,
 
     var subscriptionStatus: SubscriptionStatus = SubscriptionStatus.FREE,
 

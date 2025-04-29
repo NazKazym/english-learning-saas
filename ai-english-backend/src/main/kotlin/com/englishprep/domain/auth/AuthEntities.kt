@@ -1,6 +1,6 @@
-package com.englishlearning.domain.auth
+package com.englishprep.domain.auth
 
-import com.englishlearning.domain.user.User
+import com.englishprep.domain.user.User
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.FetchType
@@ -19,24 +19,15 @@ data class AuthToken(
     @Id
     val id: UUID = UUID.randomUUID(),
 
+    @Column(nullable = false, unique = true)
+    val token: String,
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     val user: User,
 
-    @Column(nullable = false, unique = true)
-    val token: String,
-
-    @Column(nullable = false)
-    val issuedAt: LocalDateTime = LocalDateTime.now(),
-
-    val expiresAt: LocalDateTime? = null,
-
-    @Column(name = "ip_address")
-    val ipAddress: String? = null,
-
-    val userAgent: String? = null,
-
-    var revoked: Boolean = false
+    @Column(name = "expires_at", nullable = false)
+    val expiresAt: LocalDateTime
 )
 
 @Entity

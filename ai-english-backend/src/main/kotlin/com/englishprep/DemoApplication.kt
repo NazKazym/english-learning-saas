@@ -1,4 +1,4 @@
-package com.englishlearning
+package com.englishprep
 
 import org.slf4j.LoggerFactory
 import org.springframework.boot.CommandLineRunner
