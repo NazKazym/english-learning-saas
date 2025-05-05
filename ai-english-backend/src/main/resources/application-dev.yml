@@ -17,7 +17,7 @@ spring:
 
 logging:
   level:
-    com.englishprep: DEBUG
+    com.clbboost: DEBUG
     org.hibernate.SQL: DEBUG
     org.hibernate.type.descriptor.sql.BasicBinder: TRACE
 

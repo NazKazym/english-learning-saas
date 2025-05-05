@@ -20,7 +20,7 @@ server:
 
 app:
   cors:
-    allowed-origins: ${ALLOWED_ORIGINS:https://app.englishprepsaas.com}
+    allowed-origins: ${ALLOWED_ORIGINS:https://app.clbboostsaas.com}
   security:
     jwt:
       secret: ${JWT_SECRET}
@@ -32,4 +32,4 @@ app:
 logging:
   # Let Heroku/AWS handle log collection
   level:
-    com.englishprep: INFO
+    com.clbboost: INFO

@@ -22,7 +22,7 @@ services:
       - AI_API_KEY=${AI_API_KEY:-}
       - AI_API_ENDPOINT=${AI_API_ENDPOINT:-https://api.ai-provider.com/v1}
       - EMAIL_API_KEY=${EMAIL_API_KEY:-}
-      - ALLOWED_ORIGINS=${ALLOWED_ORIGINS:-https://app.englishprepsaas.com}
+      - ALLOWED_ORIGINS=${ALLOWED_ORIGINS:-https://app.clbboostsaas.com}
 
   postgres:
     image: postgres:14-alpine

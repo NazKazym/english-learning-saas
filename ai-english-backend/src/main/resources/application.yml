@@ -45,10 +45,10 @@ app:
     api-key: ${AI_API_KEY:}
     endpoint: ${AI_API_ENDPOINT:}
   email:
-    from: noreply@englishprepsaas.com
+    from: noreply@clbboostsaas.com
     magic-link-expiration: 900  # 15 minutes in seconds
 
 logging:
   level:
-    com.englishprep: INFO
+    com.clbboost: INFO
     org.springframework: WARN
