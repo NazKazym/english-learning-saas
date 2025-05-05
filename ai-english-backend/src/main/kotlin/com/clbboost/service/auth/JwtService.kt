@@ -12,14 +12,15 @@ class JwtService(
     private val jwtSecret: String
 ) {
 
-    fun generateToken(email: String): String {
+    fun generateToken(userId: UUID, email: String): String {
         val now = Date()
         val expiry = Date(now.time + 1000 * 60 * 60 * 24) // 24 hours
 
         val secretKey = Keys.hmacShaKeyFor(jwtSecret.toByteArray())
 
         return Jwts.builder()
-            .subject(email)
+            .subject(userId.toString()) // use UUID as sub
+            .claim("email", email)
             .issuedAt(now)
             .expiration(expiry)
             .signWith(secretKey)

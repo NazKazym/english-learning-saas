@@ -1,23 +1,26 @@
 package com.clbboost.service.reading
 
 import com.clbboost.domain.reading.UserAnswer
-import com.clbboost.domain.user.User
 import com.clbboost.dto.reading.AnswerSubmissionRequest
 import com.clbboost.dto.reading.AnswerSubmissionResponse
 import com.clbboost.repository.reading.ReadingOptionRepository
 import com.clbboost.repository.reading.ReadingQuestionRepository
 import com.clbboost.repository.reading.UserAnswerRepository
+import com.clbboost.repository.user.UserRepository
 import org.springframework.stereotype.Service
 import java.util.*
 
 @Service
 class UserAnswerService(
+    private val userRepository: UserRepository,
     private val userAnswerRepository: UserAnswerRepository,
     private val questionRepository: ReadingQuestionRepository,
     private val optionRepository: ReadingOptionRepository
 ) {
 
-    fun submitAnswer(user: User, request: AnswerSubmissionRequest): AnswerSubmissionResponse {
+    fun submitAnswer(userId : UUID, request: AnswerSubmissionRequest): AnswerSubmissionResponse {
+        val user = userRepository.findById(userId)
+            .orElseThrow { IllegalStateException("User not found") }
         val question = questionRepository.findById(request.questionId)
             .orElseThrow { IllegalArgumentException("Question not found") }
 
