@@ -1,12 +1,7 @@
 package com.clbboost.domain.user
 
 import com.clbboost.domain.auth.AuthProvider
-import jakarta.persistence.Column
-import jakarta.persistence.Entity
-import jakarta.persistence.EnumType
-import jakarta.persistence.Enumerated
-import jakarta.persistence.Id
-import jakarta.persistence.Table
+import jakarta.persistence.*
 import java.time.LocalDateTime
 import java.util.*
 
@@ -31,7 +26,7 @@ data class User(
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    val proficiencyLevel: ProficiencyLevel,
+    val proficiencyLevel: ProficiencyLevel = ProficiencyLevel.BEGINNER,
 
     var subscriptionStatus: SubscriptionStatus = SubscriptionStatus.FREE,
 

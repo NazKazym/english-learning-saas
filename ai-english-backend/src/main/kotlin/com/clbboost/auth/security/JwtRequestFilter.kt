@@ -1,7 +1,7 @@
 package com.clbboost.auth.security
 
-import com.clbboost.service.auth.AuthService
 import com.clbboost.auth.model.UserPrincipal
+import com.clbboost.service.auth.AuthService
 import com.clbboost.util.logger
 import io.jsonwebtoken.ExpiredJwtException
 import io.jsonwebtoken.MalformedJwtException
@@ -16,7 +16,6 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.stereotype.Component
 import org.springframework.web.filter.OncePerRequestFilter
 import java.io.IOException
-import java.util.*
 
 @Component
 class JwtRequestFilter(
@@ -46,7 +45,7 @@ class JwtRequestFilter(
                     val user = authService.loadUserById(userId)
 
                     val principal = UserPrincipal(
-                        id = user.id!!,
+                        id = user.id,
                         email = user.email,
                         roles = listOf("USER") // Optional: load from DB if needed
                     )

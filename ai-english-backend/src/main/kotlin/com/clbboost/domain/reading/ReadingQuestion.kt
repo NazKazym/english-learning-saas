@@ -15,6 +15,6 @@ data class ReadingQuestion(
     @Column(columnDefinition = "TEXT") val questionText: String,
     val questionOrder: Int,
 
-    @OneToMany(mappedBy = "question", cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
-    val options: List<ReadingOption> = emptyList()
+    @OneToMany(mappedBy = "question", cascade = [CascadeType.ALL], orphanRemoval = true)
+    var options: MutableList<ReadingOption> = mutableListOf()
 )

@@ -3,6 +3,8 @@ package com.clbboost.controller.auth
 import com.clbboost.auth.model.JwtResponse
 import com.clbboost.auth.model.MagicLinkRequest
 import com.clbboost.auth.model.VerifyMagicLinkRequest
+import com.clbboost.domain.user.User
+import com.clbboost.repository.user.UserRepository
 import com.clbboost.service.auth.EmailService
 import com.clbboost.service.auth.JwtService
 import com.clbboost.service.auth.MagicLinkService
@@ -19,7 +21,8 @@ import org.springframework.web.bind.annotation.*
 class MagicLinkController(
     private val emailService: EmailService,
     private val magicLinkService: MagicLinkService,
-    private val jwtService: JwtService
+    private val jwtService: JwtService,
+    private val userRepository: UserRepository
 ) {
 
     @Value("\${app.magic-link.base-url}")
@@ -40,7 +43,10 @@ class MagicLinkController(
         val email = magicLinkService.verifyMagicToken(request.token)
             ?: throw IllegalArgumentException("Invalid or expired magic link token")
 
-        val jwt = jwtService.generateToken(email)
+        val user = userRepository.findByEmail(email.lowercase())
+            ?: userRepository.save(User(email = email.lowercase()))
+
+        val jwt = jwtService.generateToken(user.id, user.email)
 
         return JwtResponse(jwt)
     }

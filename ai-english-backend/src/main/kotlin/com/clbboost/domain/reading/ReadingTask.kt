@@ -13,6 +13,6 @@ data class ReadingTask(
     @Column(columnDefinition = "TEXT") val passage: String,
     val diagramUrl: String? = null,
 
-    @OneToMany(mappedBy = "task", cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
-    val questions: List<ReadingQuestion> = emptyList()
+    @OneToMany(mappedBy = "task", cascade = [CascadeType.ALL], orphanRemoval = true)
+    var questions: MutableList<ReadingQuestion> = mutableListOf()
 )
